@@ -3,6 +3,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { DeleteProfileDialog } from "./delete-profile-dialog";
 
@@ -11,13 +12,23 @@ interface ProfileDeleteActionProps {
   profileName: string;
   logoUrl?: string;
   children?: React.ReactNode;
+  /** Si se indica, se ejecuta tras eliminar en lugar de redirigir al listado. */
+  onDeleted?: () => void;
 }
 
-async function deleteProfile(profileId: string): Promise<void> {
+async function deleteProfile(
+  profileId: string,
+  accessToken?: string
+): Promise<void> {
+  if (!accessToken) {
+    throw new Error("No se pudo obtener el token de autenticación.");
+  }
+
   const response = await fetch(`/api/perfiles/${profileId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 
@@ -41,9 +52,11 @@ export function ProfileDeleteAction({
   profileName,
   logoUrl,
   children,
+  onDeleted,
 }: ProfileDeleteActionProps) {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const router = useRouter();
+  const { data: session } = useSession();
 
   if (!profileId || !profileName) {
     return null;
@@ -53,13 +66,17 @@ export function ProfileDeleteAction({
 
   const handleConfirmDeletion = async (id: string) => {
     try {
-      await deleteProfile(id);
+      await deleteProfile(id, session?.accessToken);
 
       toast.success(`✅ El perfil "${profileName}" ha sido eliminado.`, {
         duration: 3000,
       });
 
-      router.push("/dashboard/perfiles");
+      if (onDeleted) {
+        onDeleted();
+      } else {
+        router.push("/dashboard/perfiles");
+      }
     } catch (e) {
       const errorMessage =
         e instanceof Error ? e.message : "Ocurrió un error inesperado.";

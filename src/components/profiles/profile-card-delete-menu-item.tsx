@@ -9,18 +9,21 @@ interface ProfileCardDeleteMenuItemProps {
   profileId: string;
   profileName: string;
   logoUrl?: string;
+  onDeleted?: () => void;
 }
 
 export function ProfileCardDeleteMenuItem({
   profileId,
   profileName,
   logoUrl,
+  onDeleted,
 }: ProfileCardDeleteMenuItemProps) {
   return (
     <ProfileDeleteAction
       profileId={profileId}
       profileName={profileName}
       logoUrl={logoUrl}
+      onDeleted={onDeleted}
     >
       <DropdownMenuItem
         onSelect={(e) => e.preventDefault()}

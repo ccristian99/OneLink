@@ -16,7 +16,7 @@ test.describe("E2E - Test de asociación correcta con administrador y verificaci
     // Mock del API para simular la creación con administrador asociado
     await page.route("**/api/perfiles", async (route) => {
       if (route.request().method() === "POST") {
-        const requestData = JSON.parse(route.request().postData());
+        const requestData = JSON.parse(route.request().postData()!);
         
         // Verificar que el perfil incluya administrador_id
         expect(requestData).toHaveProperty('administrador_id');
@@ -84,7 +84,7 @@ test.describe("E2E - Test de asociación correcta con administrador y verificaci
     // Mock para simular error cuando el administrador no existe
     await page.route("**/api/perfiles", async (route) => {
       if (route.request().method() === "POST") {
-        const requestData = JSON.parse(route.request().postData());
+        const requestData = JSON.parse(route.request().postData()!);
         
         // Simular error de FK cuando el administrador no existe
         if (requestData.administrador_id === "admin-inexistente") {
@@ -146,7 +146,7 @@ test.describe("E2E - Test de asociación correcta con administrador y verificaci
           }),
         });
       } else if (route.request().method() === "PUT") {
-        const requestData = JSON.parse(route.request().postData());
+        const requestData = JSON.parse(route.request().postData()!);
         
         // Verificar que se está actualizando el administrador_id
         expect(requestData).toHaveProperty('administrador_id');

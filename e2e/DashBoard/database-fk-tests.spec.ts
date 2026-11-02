@@ -46,7 +46,7 @@ test.describe("E2E - Test de integridad referencial en Base de Datos", () => {
     // Mock para crear perfil solo si el admin existe
     await page.route("**/api/perfiles", async (route) => {
       if (route.request().method() === "POST") {
-        const requestData = JSON.parse(route.request().postData());
+        const requestData = JSON.parse(route.request().postData()!);
         
         // Verificar que el administrador_id es válido
         if (requestData.administrador_id === "admin-valido-123") {
@@ -140,7 +140,7 @@ test.describe("E2E - Test de integridad referencial en Base de Datos", () => {
     // Mock que simula el comportamiento de ON UPDATE CASCADE
     await page.route("**/api/administradores/*/update-cascade**", async (route) => {
       if (route.request().method() === "PUT") {
-        const requestData = JSON.parse(route.request().postData());
+        const requestData = JSON.parse(route.request().postData()!);
         
         // Simular que al actualizar el ID del admin, se actualiza en perfiles también
         await route.fulfill({
@@ -173,7 +173,7 @@ test.describe("E2E - Test de integridad referencial en Base de Datos", () => {
     // Mock para crear perfil sin administrador (administrador_id = null)
     await page.route("**/api/perfiles", async (route) => {
       if (route.request().method() === "POST") {
-        const requestData = JSON.parse(route.request().postData());
+        const requestData = JSON.parse(route.request().postData()!);
         
         // Verificar que se permite null en administrador_id
         if (requestData.administrador_id === null || requestData.administrador_id === undefined) {

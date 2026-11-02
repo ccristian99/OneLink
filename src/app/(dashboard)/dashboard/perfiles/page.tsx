@@ -6,7 +6,6 @@ import { useSession } from "next-auth/react"
 import { ProfileWithAdmin, ProfileFilters } from "@/types/profile"
 import { ProfileCard } from "@/components/profiles/profile-card"
 import { ProfileFiltersComponent } from "@/components/profiles/profele-filters"
-import { DeleteProfileDialog } from "@/components/profiles/delete-profile-dialog"
 import { ViewProfileDialog } from "@/components/profiles/view-profile-dialog"
 import { Button } from "@/components/ui/button"
 import { Plus, Loader2, AlertCircle } from "lucide-react"
@@ -28,9 +27,7 @@ export default function ProfilesPage() {
 
   // Dialog states
   const [selectedProfile, setSelectedProfile] = useState<ProfileWithAdmin | null>(null)
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [viewDialogOpen, setViewDialogOpen] = useState(false)
-  const [isDeleting, setIsDeleting] = useState(false)
 
   // Obtener token JWT de la sesión
   const getAuthToken = useCallback(async () => {
@@ -119,46 +116,6 @@ export default function ProfilesPage() {
     router.push(`/dashboard/perfiles/${profile.id}/editar`)
   }
 
-  const handleDeleteClick = (profile: ProfileWithAdmin) => {
-    setSelectedProfile(profile)
-    setDeleteDialogOpen(true)
-  }
-
-  const handleDeleteConfirm = async () => {
-    if (!selectedProfile) return
-
-    try {
-      setIsDeleting(true)
-      
-      const token = await getAuthToken()
-      if (!token) {
-        alert('No se pudo obtener el token de autenticación')
-        return
-      }
-
-      const response = await fetch(`/api/perfiles/${selectedProfile.id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      })
-
-      if (!response.ok) {
-        throw new Error('Error al eliminar el perfil')
-      }
-
-      // Refresh the list
-      await fetchProfiles()
-      setDeleteDialogOpen(false)
-      setSelectedProfile(null)
-    } catch (err) {
-      console.error('Error deleting profile:', err)
-      alert('Error al eliminar el perfil. Por favor, intenta de nuevo.')
-    } finally {
-      setIsDeleting(false)
-    }
-  }
-
   return (
     <div className="min-h-screen bg-background pb-24">
       {/* Header */}
@@ -242,7 +199,7 @@ export default function ProfilesPage() {
                   profile={profile}
                   onView={handleView}
                   onEdit={handleEdit}
-                  onDelete={handleDeleteClick}
+                  onDeleted={fetchProfiles}
                 />
               ))}
             </div>
@@ -274,14 +231,6 @@ export default function ProfilesPage() {
       </main>
 
       {/* Dialogs */}
-      <DeleteProfileDialog
-        profile={selectedProfile}
-        open={deleteDialogOpen}
-        onOpenChange={setDeleteDialogOpen}
-        onConfirm={handleDeleteConfirm}
-        isDeleting={isDeleting}
-      />
-
       <ViewProfileDialog
         profile={selectedProfile}
         open={viewDialogOpen}

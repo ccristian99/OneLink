@@ -21,9 +21,16 @@ interface ProfileCardProps {
   profile: ProfileWithAdmin;
   onView: (profile: ProfileWithAdmin) => void;
   onEdit: (profile: ProfileWithAdmin) => void;
+  /** Se ejecuta tras eliminar el perfil con éxito (p. ej. para refrescar el listado). */
+  onDeleted?: () => void;
 }
 
-export function ProfileCard({ profile, onView, onEdit }: ProfileCardProps) {
+export function ProfileCard({
+  profile,
+  onView,
+  onEdit,
+  onDeleted,
+}: ProfileCardProps) {
   const router = useRouter();
 
   const getInitials = (name: string) => {
@@ -111,6 +118,7 @@ export function ProfileCard({ profile, onView, onEdit }: ProfileCardProps) {
                   profileId={profile.id}
                   profileName={profile.nombre}
                   logoUrl={profile.logo_url ?? undefined}
+                  onDeleted={onDeleted}
                 />
               </DropdownMenuContent>
             </DropdownMenu>

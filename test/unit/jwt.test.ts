@@ -1,4 +1,4 @@
-import { generateAuthToken, verifyAuthToken } from "../../src/utils/jwt";
+import { generateAuthToken, verifyAuthToken } from "../../src/lib/jwt";
 import jwt from "jsonwebtoken";
 
 // ⚙️ Simular variable de entorno
@@ -9,7 +9,7 @@ describe("JWT Utility Functions", () => {
     id: "1",
     nombre: "Laura",
     email: "laura@ejemplo.com",
-    rol: "admin",
+    rol: "admin" as const,
   };
 
   it("debería generar un token JWT válido", () => {
