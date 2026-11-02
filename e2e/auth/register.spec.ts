@@ -76,7 +76,7 @@ test.describe("Registro Tests (RegisterAdmin)", () => {
 
     await page.goto("/register-admin");
 
-    const duplicateEmail = "admin@vicdan.com";
+    const duplicateEmail = "admin@onelink.com";
 
     // Primer registro (cliente)
     await page.getByLabel("Nombre").fill("Usuario Duplicado 1");

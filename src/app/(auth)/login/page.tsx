@@ -1,4 +1,5 @@
 import LoginForm from "./components/LoginForm";
+import { AboutNotice } from "@/components/auth/about-notice";
 
 export default function LoginPage() {
   return (
@@ -9,8 +10,9 @@ export default function LoginPage() {
       <div className="absolute top-1/2 left-1/2 w-64 h-64 opacity-20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 animate-pulse" style={{ background: 'var(--primary)', animationDelay: '0.5s' }}></div>
       
       {/* Content */}
-      <div className="relative z-10 w-full px-4">
+      <div className="relative z-10 w-full px-4 py-8">
         <LoginForm />
+        <AboutNotice className="mt-8 max-w-[440px]" />
       </div>
     </div>
   );

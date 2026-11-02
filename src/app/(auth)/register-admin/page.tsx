@@ -9,6 +9,7 @@ import { usePasswordStrength } from "./hooks/usePasswordStrength";
 import { useState, useEffect } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import styles from "./RegisterAdmin.module.css";
+import { AboutNotice } from "@/components/auth/about-notice";
 
 const schema = yup.object({
   name: yup.string().required("El nombre es obligatorio"),
@@ -251,6 +252,8 @@ export default function RegisterAdminPage() {
           </a>
         </p>
       </div>
+
+      <AboutNotice className="relative z-10 mt-8 max-w-[540px]" />
     </div>
     </div>
   );

@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Admin Dashboard",
+  title: "OneLink",
   description: "Sistema de gestión de perfiles",
 };
 

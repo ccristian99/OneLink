@@ -1,7 +1,7 @@
 import { NewProfileForm } from "@/components/new-profile-form";
 
 export const metadata = {
-  title: "Crear Perfil | Vicdan",
+  title: "Crear Perfil | OneLink",
   description: "Crea un nuevo perfil con tu información básica",
 };
 

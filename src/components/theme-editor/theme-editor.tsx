@@ -153,8 +153,8 @@ export function ThemeEditor({
   const localProfileDataRef = useRef(profileData);
 
   const defaultProfileData = {
-    nombre: "Vicdan App",
-    correo: "vicdanapp@gmail.com",
+    nombre: "OneLink",
+    correo: "contacto@onelink.example.com",
     logo_url: "",
     descripcion: "",
     links: [],
@@ -557,7 +557,7 @@ export function ThemeEditor({
       timestamp: new Date().toISOString(),
     };
     localStorage.setItem(
-      `vicdan-editor-${profileId}`,
+      `onelink-editor-${profileId}`,
       JSON.stringify(tempData)
     );
   }, [hasUnsavedChanges, profileId]);
@@ -565,7 +565,7 @@ export function ThemeEditor({
   const debouncedAutoSave = useDebounce(performAutoSave, 500);
 
   useEffect(() => {
-    const savedData = localStorage.getItem(`vicdan-editor-${profileId}`);
+    const savedData = localStorage.getItem(`onelink-editor-${profileId}`);
     if (savedData) {
       try {
         const parsed = JSON.parse(savedData);
@@ -581,7 +581,7 @@ export function ThemeEditor({
             setHasUnsavedChanges(true);
             showToast("Cambios anteriores restaurados", "success");
           } else {
-            localStorage.removeItem(`vicdan-editor-${profileId}`);
+            localStorage.removeItem(`onelink-editor-${profileId}`);
             showToast("Comenzando con configuración nueva", "info");
           }
         });
@@ -627,7 +627,7 @@ export function ThemeEditor({
   };
 
   const clearTempStorage = () => {
-    localStorage.removeItem(`vicdan-editor-${profileId}`);
+    localStorage.removeItem(`onelink-editor-${profileId}`);
   };
 
   const updateTheme = (updates: Partial<ThemeConfig>) => {
